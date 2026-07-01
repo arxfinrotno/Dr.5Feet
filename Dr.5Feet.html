@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. 5 Feet</title>
+    <style>
+        body {
+            background-color: #ffd1dc;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 35.5C20 35.5 8 24 8 15C8 10 11.5 7 15 7C17.5 7 19 8.5 20 10.5C21 8.5 22.5 7 25 7C28.5 7 32 10 32 15C32 24 20 35.5 20 35.5Z' fill='%23ff99b0' fill-opacity='0.4'/%3E%3C/svg%3E");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Comic Sans MS', 'Arial', cursive;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap; 
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .big-rose {
+            font-size: 100px;
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 350px;
+            height: 250px;
+            margin-top: 50px;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff8fa3;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 95%;
+            background: #fff;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            color: #d81159;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.8s ease 0.4s;
+            z-index: 2;
+        }
+
+        .letter h1 {
+            font-size: 32px;
+            margin: 0 0 10px 0;
+        }
+
+        .letter h2 {
+            font-size: 22px;
+            margin: 0;
+            color: #ff4d6d;
+        }
+
+        .envelope-front {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 175px solid #ff9db0;
+            border-right: 175px solid #ff9db0;
+            border-bottom: 125px solid #ff748c;
+            border-top: 125px solid transparent;
+            border-radius: 0 0 15px 15px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 130px solid #ff6b84;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 4;
+        }
+
+        .tap-instruction {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: #d81159;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 6;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .lock-screen {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-align: center;
+            width: 85%;
+            z-index: 5;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: none;
+        }
+
+        .lock-screen p {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            color: #d81159;
+            font-weight: bold;
+        }
+
+        .lock-screen input {
+            width: 85%;
+            padding: 10px;
+            border: 2px solid #ff9db0;
+            border-radius: 8px;
+            font-family: inherit;
+            margin-bottom: 10px;
+            text-align: center;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .lock-screen button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .lock-screen button:hover {
+            background-color: #d81159;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Open State */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        
+        .envelope-wrapper.open .letter {
+            transform: translateY(-160px);
+            z-index: 4;
+        }
+
+        .envelope-wrapper.open .lock-screen,
+        .envelope-wrapper.open .tap-instruction {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="big-rose">🌹</div>
+        
+        <div class="envelope-wrapper" id="env-wrapper">
+            <div class="envelope-back"></div>
+            
+            <div class="letter">
+                <h1>Shorrr Dusto</h1>
+                <h2>Porte bosho !</h2>
+            </div>
+            
+            <div class="envelope-front"></div>
+            <div class="flap"></div>
+            
+            <div class="tap-instruction" id="tap-btn" onclick="showQuestion()">Tap to Open</div>
+            
+            <div class="lock-screen" id="lock">
+                <p>Who is the most stunning doctor ever?</p>
+                <input type="text" id="answer" placeholder="Type answer here..." autocomplete="off">
+                <button onclick="checkAnswer()">Unlock</button>
+                <div class="error-message" id="error-msg">Wrong answer silly</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showQuestion() {
+            document.getElementById('tap-btn').style.display = 'none';
+            document.getElementById('lock').style.display = 'block';
+            document.getElementById('answer').focus();
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById('answer');
+            const errorMsg = document.getElementById('error-msg');
+            const wrapper = document.getElementById('env-wrapper');
+            
+            if (answerInput.value.trim().toLowerCase() === "sanjida") {
+                wrapper.classList.add('open');
+                errorMsg.style.display = "none";
+            } else {
+                errorMsg.style.display = "block";
+                answerInput.value = ""; 
+            }
+        }
+
+        document.getElementById('answer').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
